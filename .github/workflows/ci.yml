@@ -44,6 +44,8 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false  # Ensures credentials are not overridden
+
 
       - run: npm install -g surge
       - name: Deploy to staging
