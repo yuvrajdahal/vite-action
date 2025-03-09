@@ -33,6 +33,7 @@
     "jest-transform-stub": "^2.0.0",
     "jsdom": "^26.0.0",
     "moxios": "^0.4.0",
+    "semantic-release": "^24.2.3",
     "ts-jest": "^29.2.6",
     "vite": "^6.2.0",
     "vitest": "^3.0.8"
