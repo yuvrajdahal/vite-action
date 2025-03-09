@@ -1,4 +1,4 @@
-module.expots = {
+export default {
   branches: "main",
   repositoryUrl: "https://github.com/yuvrajdahal/vite-action",
   plugins: [
