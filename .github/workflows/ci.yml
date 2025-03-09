@@ -43,12 +43,20 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SEC }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: npm install -g surge
       - name: Deploy to staging
-        if: github.event_name == 'push'
+        if: github.event_name == 'push'&& github.ref == 'refs/heads/develop'
         run: surge --project ./dist --domain crazy-mind-action.surge.sh
         env:
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+
+      # - name: Deploy to production
+      #   if: github.event_name == 'push'&& github.ref == 'refs/heads/develop'
+      #   run: surge --project ./dist --domain crazy-mind-action.surge.sh
+      #   env:
+      #     SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+      #     SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+    
