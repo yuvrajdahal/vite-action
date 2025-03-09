@@ -11,6 +11,10 @@ jobs:
       issues: write
       pull-requests: write
     runs-on: ubuntu-latest
+    env:
+      SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+    
     steps:
       - uses: actions/checkout@v2
       - name: Cache Node Modules
@@ -48,21 +52,17 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_SEC }}
-          persist-credentials: false  # Ensures credentials are not overridden
-
-
+          persist-credentials: false  
       - run: npm install -g surge
       - name: Deploy to staging
         if: github.event_name == 'push'&& github.ref == 'refs/heads/develop'
         run: surge --project ./dist --domain crazy-mind-action.surge.sh
-        env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-
-      # - name: Deploy to production
-      #   if: github.event_name == 'push'&& github.ref == 'refs/heads/develop'
-      #   run: surge --project ./dist --domain crazy-mind-action.surge.sh
-      #   env:
-      #     SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-      #     SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-    
+      - name: Deploy to production
+        if: github.event_name == 'push'&& github.ref == 'refs/heads/main'
+        run: surge --project ./dist --domain bright-crayon-action.surge.sh
+      - name: Upload Coverage to Codecov
+        if: github.event_name == 'push'&& github.ref == 'refs/heads/main'
+        uses: codecov/codecov-action@v5
+        run: npx-codecov
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
